@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Todo App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      margin-top: 50px;
+    }
+
+    .todo-container {
+      background: #fff;
+      padding: 20px;
+      width: 300px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input {
+      width: 75%;
+      padding: 8px;
+    }
+
+    button {
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    li.completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .delete {
+      color: red;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="todo-container">
+    <h2>Todo List</h2>
+    <input type="text" id="todoInput" placeholder="New todo">
+    <button onclick="addTodo()">Add</button>
+
+    <ul id="todoList"></ul>
+  </div>
+
+  <script>
+    function addTodo() {
+      const input = document.getElementById("todoInput");
+      const text = input.value.trim();
+
+      if (text === "") return;
+
+      const li = document.createElement("li");
+      li.textContent = text;
+
+      li.addEventListener("click", function () {
+        li.classList.toggle("completed");
+      });
+
+      const deleteBtn = document.createElement("span");
+      deleteBtn.textContent = "✖";
+      deleteBtn.className = "delete";
+      deleteBtn.onclick = function () {
+        li.remove();
+      };
+
+      li.appendChild(deleteBtn);
+      document.getElementById("todoList").appendChild(li);
+
+      input.value = "";
+    }
+  </script>
+
+</body>
+</html>
