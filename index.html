@@ -1,99 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Simple Todo App</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      margin-top: 50px;
-    }
-
-    .todo-container {
-      background: #fff;
-      padding: 20px;
-      width: 300px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-      text-align: center;
-    }
-
-    input {
-      width: 75%;
-      padding: 8px;
-    }
-
-    button {
-      padding: 8px;
-      cursor: pointer;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 20px;
-    }
-
-    li {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px;
-      border-bottom: 1px solid #ddd;
-    }
-
-    li.completed {
-      text-decoration: line-through;
-      color: gray;
-    }
-
-    .delete {
-      color: red;
-      cursor: pointer;
-    }
-  </style>
+  <title>Todo App (PostgreSQL)</title>
 </head>
 <body>
 
-  <div class="todo-container">
-    <h2>Todo List</h2>
-    <input type="text" id="todoInput" placeholder="New todo">
-    <button onclick="addTodo()">Add</button>
+  <h2>Todo App</h2>
 
-    <ul id="todoList"></ul>
-  </div>
+  <input id="todoInput" placeholder="Enter a todo" />
+  <button onclick="addTodo()">Add</button>
+
+  <ul id="todoList"></ul>
 
   <script>
-    function addTodo() {
+    const API = "http://localhost:5000/todos";
+
+    async function loadTodos() {
+      const res = await fetch(API);
+      const todos = await res.json();
+
+      const list = document.getElementById("todoList");
+      list.innerHTML = "";
+
+      todos.forEach(todo => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          ${todo.title}
+          <button onclick="deleteTodo(${todo.id})">❌</button>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    async function addTodo() {
       const input = document.getElementById("todoInput");
-      const text = input.value.trim();
 
-      if (text === "") return;
+      if (!input.value.trim()) return;
 
-      const li = document.createElement("li");
-      li.textContent = text;
-
-      li.addEventListener("click", function () {
-        li.classList.toggle("completed");
+      await fetch(API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: input.value })
       });
 
-      const deleteBtn = document.createElement("span");
-      deleteBtn.textContent = "✖";
-      deleteBtn.className = "delete";
-      deleteBtn.onclick = function () {
-        li.remove();
-      };
-
-      li.appendChild(deleteBtn);
-      document.getElementById("todoList").appendChild(li);
-
       input.value = "";
+      loadTodos();
     }
+
+    async function deleteTodo(id) {
+      await fetch(`${API}/${id}`, { method: "DELETE" });
+      loadTodos();
+    }
+
+    loadTodos();
   </script>
 
 </body>
