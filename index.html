@@ -1,16 +1,29 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Todo App (PostgreSQL)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <h2>Todo App</h2>
+  <div class="shape shape-1"></div>
+  <div class="shape shape-2"></div>
 
-  <input id="todoInput" placeholder="Enter a todo" />
-  <button onclick="addTodo()">Add</button>
+  <div class="app-container">
+    <h2>Todo App</h2>
 
-  <ul id="todoList"></ul>
+    <div class="input-group">
+      <input id="todoInput" placeholder="Enter a todo" />
+      <button class="add-btn" onclick="addTodo()">Add</button>
+    </div>
+
+    <ul id="todoList"></ul>
+  </div>
 
   <script>
     const API = "http://localhost:5000/todos";
@@ -24,9 +37,10 @@
 
       todos.forEach(todo => {
         const li = document.createElement("li");
+        li.className = "todo-item";
         li.innerHTML = `
-          ${todo.title}
-          <button onclick="deleteTodo(${todo.id})">❌</button>
+          <span>${todo.title}</span>
+          <button class="delete-btn" onclick="deleteTodo(${todo.id})" title="Delete">❌</button>
         `;
         list.appendChild(li);
       });
@@ -56,4 +70,5 @@
   </script>
 
 </body>
+
 </html>
