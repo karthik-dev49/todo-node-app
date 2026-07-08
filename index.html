@@ -18,7 +18,7 @@
     <h2>Todo App</h2>
 
     <div class="input-group">
-      <input id="todoInput" placeholder="Enter a todo" />
+      <input id="todoInput" placeholder="Enter a todo" onkeydown="if (event.key === 'Enter') addTodo()" />
       <button class="add-btn" onclick="addTodo()">Add</button>
     </div>
 
