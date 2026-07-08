@@ -23,6 +23,10 @@
     </div>
 
     <ul id="todoList"></ul>
+
+    <div class="todo-stats">
+      <span id="todoCount">Total Tasks: 0</span>
+    </div>
   </div>
 
   <script>
@@ -44,6 +48,10 @@
         `;
         list.appendChild(li);
       });
+
+      // Update the task counter
+      const countEl = document.getElementById("todoCount");
+      countEl.textContent = `Total Tasks: ${todos.length}`;
     }
 
     async function addTodo() {
